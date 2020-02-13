@@ -8,15 +8,26 @@ USE Biblioteca_Tarde;
 
 DROP DATABASE MedGroup_Tarde;
 
-DROP TABLE Clinica;
+DROP TABLE Endereco;
 
 
+CREATE TABLE Endereco (
+IdEndereco		INT PRIMARY KEY IDENTITY,
+Rua				VARCHAR(220) NOT NULL,
+Bairro			VARCHAR(150) NOT NULL,
+Cidade			VARCHAR(200) NOT NULL,
+);
+
+CREATE TABLE Situacao (
+IdSituacao		INT PRIMARY KEY IDENTITY,
+Titulo			VARCHAR(150) NOT NULL
+);
 
 CREATE TABLE Clinica (
 IdClinica		INT PRIMARY KEY IDENTITY,
 Titulo			VARCHAR (255) NOT NULL UNIQUE,
 RazaoSocial		VARCHAR (255) NOT NULL,
-Endereco		VARCHAR (255) NOT NULL UNIQUE,
+IdEndereco		INT FOREIGN KEY REFERENCES Endereco (IdEndereco),
 CNPJ			CHAR (18) NOT NULL UNIQUE
 );
 
@@ -50,18 +61,20 @@ IdProntuario	INT PRIMARY KEY IDENTITY,
 Nome			VARCHAR (255) NOT NULL,
 RG				CHAR (15) NOT NULL UNIQUE,
 CPF				CHAR (15) NOT NULL UNIQUE, 
-Endereco		VARCHAR (255) NOT NULL,
 DataNascimento	DATE NOT NULL,
 Telefone		VARCHAR (200) NOT NULL,
-IdUsuario		INT FOREIGN KEY REFERENCES Usuario (IdUsuario)
+IdUsuario		INT FOREIGN KEY REFERENCES Usuario (IdUsuario),
+IdEndereco		INT FOREIGN KEY REFERENCES Endereco (IdEndereco)
 );
 
 CREATE TABLE Consulta (
 IdConsulta		INT PRIMARY KEY IDENTITY,
 DataConsulta	DATETIME2 NOT NULL,
-Situacao		VARCHAR (255) NOT NULL,
+IdSituacao		INT FOREIGN KEY REFERENCES Situacao (IdSituacao),
 IdMedico		INT FOREIGN KEY REFERENCES Medico (IdMedico),
 IdProntuario	INT FOREIGN KEY REFERENCES Prontuario (IdProntuario)
 );
+
+
 
 
